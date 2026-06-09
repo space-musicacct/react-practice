@@ -62,10 +62,8 @@ Node.js はホストにインストールせず、すべて Docker コンテナ�
 
 ```bash
 # 1. package.json の dependencies / devDependencies を手動で編集
-# 2. node_modules ボリュームを削除して再ビルド
-docker compose down
-docker volume rm react-practice_node_modules
-docker compose up -d --build
+# 2. コンテナを再起動 (起動時に npm install が自動実行される)
+docker compose restart frontend
 ```
 
 ### その他のコマンド
