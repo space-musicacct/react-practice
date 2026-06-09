@@ -48,9 +48,28 @@ docker compose logs -f
 
 # 再ビルド
 docker compose up -d --build
+```
 
-# npm パッケージを追加
+## npm の操作
+
+Node.js はホストにインストールせず、すべて Docker コンテナ経由で実行する。
+ホストに直接インストールすると環境を汚染し、バージョン差異で再現性が失われる。
+
+```bash
+# パッケージを追加 (package.json に記録される)
 docker compose exec frontend npm install <package>
+
+# devDependencies に追加
+docker compose exec frontend npm install -D <package>
+
+# パッケージを削除
+docker compose exec frontend npm uninstall <package>
+
+# lint
+docker compose exec frontend npm run lint
+
+# フォーマット
+docker compose exec frontend npm run format
 
 # node_modules ごと作り直す (依存関係が壊れたとき)
 docker compose down
