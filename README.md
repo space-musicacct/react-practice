@@ -55,33 +55,25 @@ docker compose up -d --build
 Node.js はホストにインストールせず、すべて Docker コンテナ経由で実行する。
 ホストに直接インストールすると環境を汚染し、バージョン差異で再現性が失われる。
 
-ソースディレクトリはコンテナにバインドマウントされているため、コンテナ内で `npm install` すると
-ホスト側の `package.json` / `package-lock.json` も更新される。
-**パッケージを追加・削除したら必ずこの 2 ファイルをコミットすること。**
-これにより他の環境でも `docker compose up -d --build` だけで同じ依存関係が再現される。
+### パッケージの追加・削除
+
+`npm install <package>` コマンドで直接入れるのではなく、**先に `package.json` を編集してからビルドする。**
+コマンド経由だとコミットし忘れて他の環境で再現できなくなるリスクがある。
 
 ```bash
-# パッケージを追加
-docker compose exec frontend npm install <package>
+# 1. package.json の dependencies / devDependencies を手動で編集
+# 2. node_modules ボリュームを削除して再ビルド
+docker compose down
+docker volume rm react-practice_node_modules
+docker compose up -d --build
+```
 
-# devDependencies に追加
-docker compose exec frontend npm install -D <package>
+### その他のコマンド
 
-# パッケージを削除
-docker compose exec frontend npm uninstall <package>
-
-# パッケージ追加後、忘れずにコミット
-git add package.json package-lock.json
-git commit -m "add <package>"
-
+```bash
 # lint
 docker compose exec frontend npm run lint
 
 # フォーマット
 docker compose exec frontend npm run format
-
-# node_modules ごと作り直す (依存関係が壊れたとき)
-docker compose down
-docker volume rm react-practice_node_modules
-docker compose up -d --build
 ```
