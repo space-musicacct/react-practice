@@ -18,7 +18,7 @@ React + TypeScript + Vite + Tailwind CSS の学習用リポジトリ。
 - Docker CE + docker-compose-plugin
 - Git
 
-## 環境構築 (Docker)
+## 環境構築
 
 ```bash
 # 1. リポジトリをクローン
@@ -27,22 +27,6 @@ cd react-practice
 
 # 2. コンテナをビルド・起動
 docker compose up -d --build
-```
-
-http://localhost:40080 でアクセス。
-
-## 環境構築 (ローカル)
-
-```bash
-# 1. リポジトリをクローン
-git clone git@github.com:space-musicacct/react-practice.git
-cd react-practice
-
-# 2. 依存パッケージをインストール
-npm install
-
-# 3. 開発サーバーを起動
-npm run dev
 ```
 
 http://localhost:40080 でアクセス。
